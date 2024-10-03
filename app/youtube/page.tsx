@@ -1,52 +1,37 @@
-'use client';
+import YouTubeVideo from '@/components/youtubePage';
 
-import { useState } from 'react';
-
-interface Video {
-  id: {
-    videoId: string;
-  };
-  snippet: {
-    title: string;
-    thumbnails: {
-      default: {
-        url: string;
-      };
-    };
-  };
+interface youtubeObj {
+  id: number;
+  videoId: string;
+  title: string;
 }
 
-export default function YouTubeSearch() {
-  const [query, setQuery] = useState<string>('');
-  const [videos, setVideos] = useState<Video[]>([]);
+const youtubeInfo: youtubeObj[] = [
+  {
+    id: 1,
+    videoId: 'HkwFwGYtqfk',
+    title: 'ケイド ルオトロ vs アンドリュー タケット',
+  },
+  {
+    id: 2,
+    videoId: '5UwQJe9ljDs',
+    title: 'ケイド ルオトロ vs リーバイ ジョーンズ',
+  },
+  {
+    id: 3,
+    videoId: '5_wVuKzUU-A',
+    title: 'ルーカス バルボーザ vs ジョセフ チェン',
+  },
+];
 
-  const searchYouTube = async () => {
-    const res = await fetch(`/api/youtube?query=${query}`);
-    const data = await res.json();
-    setVideos(data.items);
-  };
-
+const Page = () => {
   return (
     <div>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search YouTube"
-      />
-      <button onClick={searchYouTube}>Search</button>
-
-      <div>
-        {videos.map((video) => (
-          <div key={video.id.videoId}>
-            <h3>{video.snippet.title}</h3>
-            <img
-              src={video.snippet.thumbnails.default.url}
-              alt={video.snippet.title}
-            />
-          </div>
-        ))}
-      </div>
+      {youtubeInfo.map((info) => (
+        <YouTubeVideo key={info.id} videoId={info.videoId} title={info.title} />
+      ))}
     </div>
   );
-}
+};
+
+export default Page;
